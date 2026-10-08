@@ -1,6 +1,9 @@
 job_id,title,company,location,salary,posted_date
-1,Software Engineer,TechCorp,New York,120000,2023-10-01
-2,Data Analyst,DataViz,Remote,95000,2023-10-02
-3,Java Developer,CodeShop,Chicago,110000,2023-10-03
-4,Senior Engineer,BigTech,San Francisco,160000,2023-10-04
-5,Junior Developer,StartUp,Austin,70000,2023-10-05
+1,Software Engineer,TechCorp,Johannesburg,45000,2026-10-01
+2,Data Analyst,DataViz,Pretoria,35000,2026-10-02
+3,Java Developer,CodeShop,Cape Town,50000,2026-10-03
+4,Senior Data Engineer,BigTech,Johannesburg,75000,2026-10-04
+5,Junior Developer,StartUp,Durban,28000,2026-10-05
+6,Cloud Engineer,Cloud Africa,Johannesburg,65000,2026-10-06
+7,Database Administrator,Data Systems,Pretoria,55000,2026-10-07
+8,DevOps Engineer,CloudTech,Cape Town,60000,2026-10-08
