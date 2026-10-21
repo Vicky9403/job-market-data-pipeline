@@ -1,62 +1,68 @@
-# South African Job Market Data Pipeline 🇿🇦
+# South African Job Market Data Pipeline
+
+A Java-based data engineering project that collects, cleans, stores, and analyses sample technology job-market data from South Africa.
+
+The pipeline uses CSV files for data ingestion, Java for data processing, PostgreSQL for data storage, and SQL for analysis.
+
+This project was developed as part of my Data Engineering elective to practise building a complete data pipeline.
 
 ## Project Overview
 
-The South African Job Market Data Pipeline is a Java-based data engineering project that demonstrates how job-market data can be ingested, cleaned, stored in a PostgreSQL database, and analysed using SQL.
+The pipeline follows these steps:
 
-The project uses a sample dataset representing technology jobs across South African cities.
-
-## Project Objectives
-
-- Read job-market data from CSV files.
-- Clean and prepare data for processing.
-- Store cleaned records in PostgreSQL.
-- Analyse job salaries and job distributions using SQL.
-- Test the pipeline using automated unit tests.
-- Practise data engineering concepts using Java and SQL.
+1. Read job data from a CSV file.
+2. Clean and validate the data.
+3. Save the cleaned data to a new CSV file.
+4. Load the cleaned records into PostgreSQL.
+5. Analyse job salaries and locations using SQL.
 
 ## Technologies Used
 
-- Java 21
-- Maven
-- OpenCSV
-- PostgreSQL 16
-- JDBC
-- JUnit 5
-- SLF4J
-- Git and GitHub
+- **Java 21** — data processing and application logic
+- **Maven** — project and dependency management
+- **OpenCSV** — reading and writing CSV files
+- **PostgreSQL 16** — relational database
+- **JDBC** — connecting Java to PostgreSQL
+- **JUnit 5** — automated testing
+- **SLF4J** — application logging
+- **Git and GitHub** — version control
 
 ## Pipeline Workflow
 
 ```text
-Raw Job Data (CSV)
-        |
-        v
-   Data Ingestion
-        |
-        v
-    Data Cleaning
-        |
-        v
-  Cleaned CSV File
-        |
-        v
- PostgreSQL Database
-        |
-        v
-     SQL Analysis
-        |
-        v
-   Results and Insights
+        Raw Job Data
+        jobs.csv
+            |
+            v
+      CSV Ingestion
+            |
+            v
+       Data Cleaning
+            |
+            v
+      Cleaned CSV File
+    cleaned_jobs.csv
+            |
+            v
+     PostgreSQL Database
+         job_market_db
+            |
+            v
+        SQL Analysis
+            |
+            v
+      Results and Insights
+```
 
+## Project Structure
+
+```text
 job-market-data-pipeline/
-│
 ├── data/
 │   ├── input/
 │   │   └── jobs.csv
 │   └── output/
 │       └── cleaned_jobs.csv
-│
 ├── src/
 │   ├── main/
 │   │   └── java/
@@ -67,132 +73,305 @@ job-market-data-pipeline/
 │   │           │   └── CsvIngestor.java
 │   │           ├── DataCleaner.java
 │   │           └── PostgresLoader.java
-│   │
 │   └── test/
 │       └── java/
 │           └── com/jobpipeline/
-│
 ├── pom.xml
 └── README.md
+```
 
+## Getting Started
 
+Follow these steps to download, configure, and run the project.
 
-1. Project Setup
-- Created a Java 21 Maven project.
-- Configured the required dependencies.
-- Created a sample South African job-market dataset.
-- Connected the repository to GitHub using SSH.
-2. Data Ingestion
-- Implemented CSV ingestion using OpenCSV.
-- Mapped CSV records to Java Job objects.
-- Added tests for CSV ingestion.
-3. Data Cleaning
-- Implemented a data-cleaning stage.
-- Generated a separate cleaned CSV file.
-- Saved the output to data/output/cleaned_jobs.csv.
-4. PostgreSQL Database
-- Created the job_market_db database.
-- Created a jobs table.
-- Configured a database user and the required permissions.
-5. Data Loading
-- Implemented PostgresLoader.java using JDBC.
-- Loaded cleaned job records into PostgreSQL.
-- Used prepared statements to insert records.
-- Used transaction handling and prevented duplicate job IDs from being inserted.
-6. SQL Analysis
-Executed SQL queries to explore the sample dataset.
+### Prerequisites
 
-Examples include:
-- Calculating average salaries by location.
-- Identifying the highest-paying jobs.
-- Counting jobs by location.
-7. Testing
-- Added JUnit tests for CSV ingestion and data cleaning.
-- Ran the Maven test suite successfully.
-Sample Results
-The current dataset contains eight sample job records.
-Average Salary by Location
-Location	Average Salary (ZAR)
-Johannesburg	61,666.67
-Cape Town	55,000.00
-Pretoria	45,000.00
-Durban	28,000.00
+Install the following software before starting:
 
-
-Number of Jobs by Location
-Location	Number of Jobs
-Johannesburg	3
-Pretoria	2
-Cape Town	2
-Durban	1
-
-
-These results are calculated from the current sample dataset and should not be interpreted as representative statistics for the entire South African job market.
-Dataset
-The sample dataset includes the following fields:
-- job_id
-- title
-- company
-- location
-- salary
-- posted_date
-The dataset contains example technology roles in Johannesburg, Pretoria, Cape Town, and Durban.
-
-Salary values are represented in South African Rand (ZAR).
-
-Important: The dataset is sample data created for learning and demonstration purposes. It is not a comprehensive collection of real job vacancies.
-
-How to Run the Project
-Prerequisites
-Install or configure:
-- Java 21
-- Maven
-- PostgreSQL
+- Java Development Kit (JDK) 21
+- Apache Maven
+- PostgreSQL 16 or a compatible PostgreSQL version
 - Git
-Step 1: Clone the repository
-git clone https://github.com/Vicky9403/job-market-data-pipeline.git
-cd job-market-data-pipeline
 
-Step 2: Run the tests
-mvn clean test
-
-Step 3: Run data cleaning
-Run the DataCleaner class from IntelliJ or use the appropriate Maven command if configured.
-Step 4: Load data into PostgreSQL
-Configure the PostgreSQL database and provide the database password through the DB_PASSWORD environment variable before running PostgresLoader.
-
-Do not commit database passwords or other secrets to GitHub.
-Future Improvements
-- Add more realistic and comprehensive job-market data.
-- Improve data validation and cleaning rules.
-- Analyse salary trends by job title and location.
-- Explore in-demand technical skills.
-- Containerise the application and database using Docker.
-- Add automated builds and tests using GitHub Actions.
-- Expand test coverage for the cleaning and database-loading stages.
-Learning Outcomes
-This project demonstrates practical experience with:
-- Java application development.
-- CSV data ingestion and processing.
-- Data cleaning.
-- Relational database design.
-- PostgreSQL and SQL queries.
-- JDBC database connectivity.
-- Unit testing.
-- Git and GitHub version control.
-Author
-Developed as part of my Data Engineering elective to practise building a data pipeline using Java, CSV files, PostgreSQL, and SQL.
-
-## Step 2.2: Save and check your changes
-
-After replacing the README in IntelliJ:
-
-1. Press **Ctrl + S** to save the file.
-2. Return to your terminal.
-3. Run:
+You can check your Java and Maven installations using:
 
 ```bash
-git status
+java -version
+mvn -version
+```
+
+### Step 1: Clone the Repository
+
+Open your terminal and run:
+
+```bash
+git clone https://github.com/Vicky9403/job-market-data-pipeline.git
+```
+
+Move into the project directory:
+
+```bash
+cd job-market-data-pipeline
+```
+
+### Step 2: Run the Tests
+
+Run the automated tests to check the CSV ingestion and data-cleaning functionality:
+
+```bash
+mvn clean test
+```
+
+The build should finish with:
+
+```text
+BUILD SUCCESS
+```
+
+### Step 3: Clean the Job Data
+
+Run the data cleaner:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.jobpipeline.DataCleaner"
+```
+
+The program reads:
+
+```text
+data/input/jobs.csv
+```
+
+It cleans the records and creates:
+
+```text
+data/output/cleaned_jobs.csv
+```
+
+The program also displays a summary of the records read, valid records kept, invalid records skipped, and duplicates removed.
+
+### Step 4: Set Up PostgreSQL
+
+Make sure your PostgreSQL server is running.
+
+Create a database named:
+
+```text
+job_market_db
+```
+
+Create a database user named:
+
+```text
+job_pipeline_user
+```
+
+Configure the user with the required permissions to connect to the database and read and write the `jobs` table.
+
+The database table must match the schema expected by `PostgresLoader.java`.
+
+**Important:** The project expects the following database connection details:
+
+| Setting | Value |
+|---|---|
+| Database | `job_market_db` |
+| Username | `job_pipeline_user` |
+| Host | `localhost` |
+| Port | `5432` |
+| Password | Supplied through an environment variable |
+
+If you need to create the database and table from scratch, check the SQL statements and table structure expected by `PostgresLoader.java` before running the loader.
+
+### Step 5: Configure the Database Password
+
+The application reads the PostgreSQL password from an environment variable named `DB_PASSWORD`.
+
+On Linux, run:
+
+```bash
+read -s -p "Enter your PostgreSQL password: " DB_PASSWORD
+export DB_PASSWORD
+echo
+```
+
+Enter the password for `job_pipeline_user` when prompted.
+
+The password will not appear while you type.
+
+This setting applies to the current terminal session. If you open a new terminal, you may need to set it again.
+
+**Security note:** Never commit your database password or other secrets to GitHub.
+
+### Step 6: Load the Data into PostgreSQL
+
+After completing the database setup and setting `DB_PASSWORD`, run:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.jobpipeline.PostgresLoader"
+```
+
+The loader reads:
+
+```text
+data/output/cleaned_jobs.csv
+```
+
+It inserts the cleaned records into the PostgreSQL `jobs` table.
+
+The loader uses prepared statements and transaction handling. Existing job IDs are not inserted again, helping prevent duplicate records when the loader is run repeatedly.
+
+### Step 7: Verify the Database
+
+Connect to PostgreSQL:
+
+```bash
+psql -U job_pipeline_user -h localhost -d job_market_db
+```
+
+Enter the database user's password when prompted.
+
+Check the number of jobs:
+
+```sql
+SELECT COUNT(*) FROM jobs;
+```
+
+Display all stored jobs:
+
+```sql
+SELECT * FROM jobs ORDER BY job_id;
+```
+
+For the supplied sample dataset, the expected number of records is eight.
+
+### Step 8: Analyse the Data Using SQL
+
+Run the following queries inside the PostgreSQL terminal.
+
+#### Average Salary by Location
+
+```sql
+SELECT location, ROUND(AVG(salary), 2) AS average_salary
+FROM jobs
+GROUP BY location
+ORDER BY average_salary DESC;
+```
+
+#### Top Five Highest-Paying Jobs
+
+```sql
+SELECT title, company, location, salary
+FROM jobs
+ORDER BY salary DESC
+LIMIT 5;
+```
+
+#### Number of Jobs by Location
+
+```sql
+SELECT location, COUNT(*) AS total_jobs
+FROM jobs
+GROUP BY location
+ORDER BY total_jobs DESC, location ASC;
+```
+
+To leave the PostgreSQL terminal, run:
+
+```sql
+\q
+```
+
+## Sample Results
+
+The current sample dataset contains eight technology job records from four South African cities.
+
+### Average Salary by Location
+
+| Location | Average Salary (ZAR) |
+|---|---:|
+| Johannesburg | R61,666.67 |
+| Cape Town | R55,000.00 |
+| Pretoria | R45,000.00 |
+| Durban | R28,000.00 |
+
+### Number of Jobs by Location
+
+| Location | Number of Jobs |
+|---|---:|
+| Johannesburg | 3 |
+| Cape Town | 2 |
+| Pretoria | 2 |
+| Durban | 1 |
+| **Total** | **8** |
+
+These results are calculated from the current sample dataset. They should not be interpreted as representative statistics for the entire South African job market.
+
+## Dataset Description
+
+The input file is:
+
+```text
+data/input/jobs.csv
+```
+
+It contains the following columns:
+
+| Column | Description |
+|---|---|
+| `job_id` | Unique identifier for a job record |
+| `title` | Job title |
+| `company` | Company name |
+| `location` | South African city |
+| `salary` | Salary in South African Rand (ZAR) |
+| `posted_date` | Date the job was posted |
+
+The sample dataset includes locations such as Johannesburg, Pretoria, Cape Town, and Durban.
+
+**Note:** The dataset is created for learning and demonstration purposes. It does not represent a comprehensive collection of real job vacancies.
+
+## Testing
+
+The project includes automated JUnit tests for CSV ingestion and data cleaning.
+
+Run the test suite using:
+
+```bash
+mvn clean test
+```
+
+The tests help verify that the ingestion and cleaning stages behave as expected.
+
+## Future Improvements
+
+Possible improvements include:
+
+- Add more job records from reliable data sources.
+- Expand data validation and cleaning rules.
+- Analyse salaries by job title and location.
+- Explore demand for different technical skills.
+- Add Docker support for the application and database.
+- Configure GitHub Actions for automated testing.
+- Expand automated tests for database loading.
+
+## Learning Outcomes
+
+This project provides practical experience with:
+
+- Java application development
+- CSV ingestion and processing
+- Data cleaning and validation
+- PostgreSQL database management
+- JDBC database connectivity
+- SQL querying and aggregation
+- Automated testing with JUnit
+- Version control using Git and GitHub
+
+## Author
+
+Developed as part of my Data Engineering elective to practise building a data pipeline using Java, CSV files, PostgreSQL, and SQL.
+
+**GitHub Repository:**  
+https://github.com/Vicky9403/job-market-data-pipeline
 
 WTC-6EYKBRS6
 
