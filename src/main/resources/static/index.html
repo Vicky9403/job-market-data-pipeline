@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South African Job Market Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Google Fonts for crisp typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-brand">
+                <div class="brand-flag">🇿🇦</div>
+                <div>
+                    <h1 class="header-title">South African Job Market Dashboard</h1>
+                    <p class="header-subtitle">Real-time data intelligence & analytics from <code>job_market_db</code></p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="connection-pill" id="dbStatusBadge">
+                    <span class="status-dot"></span>
+                    <span id="dbStatusText">Connecting to DB...</span>
+                </div>
+                <button id="refreshBtn" class="btn btn-primary" onclick="loadDashboardData()">
+                    <span class="btn-icon">↻</span> Refresh
+                </button>
+            </div>
+        </header>
+
+        <!-- Pipeline Banner for 5-minute presentation -->
+        <div class="pipeline-flow-banner">
+            <div class="flow-step"><span class="step-num">1</span> CSV Ingestion</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="step-num">2</span> Data Cleaning</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="step-num">3</span> PostgreSQL Storage</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><span class="step-num">4</span> Spring Boot API</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step active"><span class="step-num">5</span> Live Analytics</div>
+        </div>
+
+        <!-- Alert Notification Box (Hidden by default) -->
+        <div id="errorAlert" class="alert-box alert-error" style="display: none;">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <strong id="alertTitle">Connection Issue</strong>
+                <p id="alertMessage"></p>
+                <small id="alertHint" class="alert-hint"></small>
+            </div>
+        </div>
+
+        <!-- KPI Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon total-jobs-icon">💼</div>
+                <div class="metric-info">
+                    <span class="metric-label">Total Jobs</span>
+                    <h2 class="metric-value" id="kpiTotalJobs">-</h2>
+                    <span class="metric-subtext">Active vacancies loaded</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon avg-salary-icon">💰</div>
+                <div class="metric-info">
+                    <span class="metric-label">Average Salary</span>
+                    <h2 class="metric-value" id="kpiAvgSalary">-</h2>
+                    <span class="metric-subtext">Across all locations</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon top-city-icon">🏆</div>
+                <div class="metric-info">
+                    <span class="metric-label">Highest Avg Salary City</span>
+                    <h2 class="metric-value" id="kpiTopCity">-</h2>
+                    <span class="metric-subtext" id="kpiTopCityVal">-</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon market-share-icon">📍</div>
+                <div class="metric-info">
+                    <span class="metric-label">Top Hiring Hub</span>
+                    <h2 class="metric-value" id="kpiTopLocation">-</h2>
+                    <span class="metric-subtext" id="kpiTopLocationVal">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Grid -->
+        <section class="charts-grid">
+            <div class="dashboard-card chart-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Average Salary by City</h3>
+                        <p class="card-subtitle">Mean monthly compensation in South African Rand (ZAR)</p>
+                    </div>
+                    <span class="badge badge-accent">ZAR / Month</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salaryByCityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-card chart-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Job Distribution by Location</h3>
+                        <p class="card-subtitle">Volume of open listings across metropolitan areas</p>
+                    </div>
+                    <span class="badge badge-info">Location Share</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="jobsByLocationChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top 5 Highest-Paying Jobs Table -->
+        <section class="table-section">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Top 5 Highest-Paying Jobs</h3>
+                        <p class="card-subtitle">Leading roles sorted by highest compensation package</p>
+                    </div>
+                    <span class="badge badge-success">Top Earners</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="topJobsTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">Rank</th>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Location</th>
+                                <th class="text-right">Salary (ZAR)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topJobsBody">
+                            <tr>
+                                <td colspan="5" class="table-placeholder">Loading top-paying jobs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-content">
+                <p><strong>South African Job Market Pipeline Dashboard</strong> &bull; Java 21, Spring Boot, PostgreSQL &amp; OpenCSV</p>
+                <p class="footer-muted">Connected to <code>jdbc:postgresql://localhost:5432/job_market_db</code> &bull; User: <code>job_pipeline_user</code></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chart.js (local bundle with CDN fallback) -->
+    <script src="js/chart.min.js"></script>
+    <script>
+        if (typeof Chart === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js';
+            document.head.appendChild(script);
+        }
+    </script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
